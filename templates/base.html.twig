@@ -1,22 +1,47 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        <script src="https://cdn.tailwindcss.com"></script>
-        <script>
-            tailwind.config = {
-                darkMode: 'class'
-            }
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Welcome!
+			{% endblock %}
+		</title>
+		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+		<script src="https://cdn.tailwindcss.com"></script>
+		<script>
+			tailwind.config = {
+darkMode: 'class'
+}
 		</script>
-        {% block stylesheets %}
-        {% endblock %}
+		{% block stylesheets %}{% endblock %}
 
-        {% block javascripts %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+		{% block javascripts %}{% endblock %}
+	</head>
+	<body>
+		<div class="max-w-screen-md mx-auto my-12">
+			<header class="flex justify-between items-center">
+				<h1 class="text-2xl font-semibold">
+					{% block h1 %}ToDo List
+					{% endblock %}
+				</h1>
+				<div class="flex items-center gap-4">
+					{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+						<a href="{{ path('app_logout') }}" class="border rounded border-gray-400 px-4 py-1 hover:bg-gray-300">Logout</a>
+					{% else %}
+						<a href="{{ path('app_login') }}" class="border rounded border-gray-400 px-4 py-1 hover:bg-gray-300">Login</a>
+						<a href="{{ path('app_register') }}" class="border rounded border-gray-400 px-4 py-1 hover:bg-gray-300">Register</a>
+					{% endif %}
+				</div>
+			</header>
+
+			<div class="text-sm mb-5">
+				{% if app.request.attributes.get('_route') != 'app_todo' %}
+					<a href="{{ path('app_todo') }}">Home</a>
+				{% endif %}
+				{% block bread %}{% endblock %}
+			</div>
+
+			{% block body %}{% endblock %}
+		</div>
+	</body>
 </html>

@@ -1,11 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Todo App{% endblock %}
+{% block title %}Todo App
+{% endblock %}
 
 {% block body %}
-	<div class="max-w-screen-md mx-auto my-12">
-		<h1 class="text-2xl font-semibold mb-2">ToDo List</h1>
-		<div class="border border-gray-400 p-8 rounded-md">
-        Form</div>
+	<div class="border border-gray-400 p-8 rounded-md">
+
+		{% if posts|length > 0 %}
+			<div class="mb-8 border-b pb-3">
+				<ul>
+					{% for post in posts %}
+						<li class="border rounded-sm border-gray-200 px-4 py-2 mb-5 flex items-center justify-between">
+							<span>{{ post.content }}</span>
+							<a href="{{ path('app_todo_done', { id: post.id }) }}" class="px-2 border border-indigo-300 rounded hover:bg-indigo-300">Done</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		{% endif %}
+
+		{{ form_start(form) }}
+		<div>
+			{{ form_label(form.content, 'New Task', {'label_attr':{'class':'block text-sm text-gray-700 font-medium'}}) }}
+			{{ form_widget(form.content, { 'attr': {'class': 'block w-full shadow-sm border border-gray-300 mt-1 p-2 rounded-sm'} })}}
+			{{ form_errors(form.content) }}
+		</div>
+
+		<button type="submit" class="mt-4 text-white py-2 	block w-full border-transparent bg-indigo-600 hover:bg-indigo-500">Add task</button>
+		{{ form_end(form) }}
 	</div>
 {% endblock %}
